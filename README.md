@@ -1,2 +1,2 @@
-# BLAS
-Educational Repo For Basic Linear Algebra Sub Programs
+# SGEMM
+Educational Repo For Single Precision Matrix Multiplication
