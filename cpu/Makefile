@@ -1,8 +1,9 @@
 CC = gcc
 CFLAGS = -O2 -Wall
 LDFLAGS = -lopenblas  # This should be used only in the linking step
+AVXFLAGS = -march=native -mavx
 
-OBJS = naive_matmul.o cblas_matmul.o main.o
+OBJS = kernels.o matmul.o main.o
 
 # Default target
 all: benchmark
@@ -11,13 +12,13 @@ all: benchmark
 benchmark: $(OBJS)
 	$(CC) -o benchmark $(OBJS) $(LDFLAGS)  
 
-naive_matmul.o: naive_matmul.c
-	$(CC) $(CFLAGS) -c naive_matmul.c
+matmul.o: matmul.c kernels.h matmul.h
+	$(CC) $(CFLAGS) -c matmul.c
 
-cblas_matmul.o: cblas_matmul.c
-	$(CC) $(CFLAGS) -c cblas_matmul.c  
+kernels.o: kernels.c
+	$(CC) $(CFLAGS)  $(AVXFLAGS) -c kernels.c  
 
-main.o: main.c
+main.o: main.c matmul.h
 	$(CC) $(CFLAGS) -c main.c
 
 clean:
